@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    {% block head %}
+        <meta charset="UTF-8">
+        <title>{% block title %}{% endblock %} - VCAD</title>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+                    <div class="alert alert-info ">
+                        <button data-dismiss="alert" class="close close-sm" type="button">
+                            <i class="fa fa-times"></i>
+                        </button>
+                        <strong>Important</strong> {{ message }}
+                    </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <meta name="description" content="Developed by Shahid Ali and Hassan Nadeem">
+        <meta name="keywords" content="VCAD, Volunteer, Computing, Android, Devices">
+
+        <!-- bootstrap 3.3.6 -->
+        <link href={{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }} rel="stylesheet" media="screen">
+        <!-- ion icons -->
+        <link href={{ url_for('static', filename='css/ionicons.min.css') }} rel="stylesheet" type="text/css">
+        <!-- Google font -->
+        <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+        <!-- font Awesome -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+        <!-- Theme style -->
+        <link href={{ url_for('static', filename='css/style.css') }} rel="stylesheet" media="screen">
+
+    {% endblock %}
+    </head>
+
+    <body class="skin-black">
+        <!-- header logo -->
+        <header class="header">
+            <a href="index.html" class="logo">
+                VCAD
+            </a>
+            <!-- Header Navbar -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="navbar-right">
+                    <ul class="nav navbar-nav">
+
+                        <!-- Messages 
+                        <li class="dropdown messages-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-envelope"></i>
+                                <span class="label label-success">1</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">You have 1 messages</li>
+                                <li>
+                                     
+                                    <ul class="menu">
+                                        
+                                            <a href="#">
+                                                <div class="pull-left">
+                                                    <img src="img/avatar3.png" class="img-circle" alt="User Image"/>
+                                                </div>
+                                                <h4>
+                                                    Support Team
+                                                    <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                                </h4>
+                                                <p>Why not buy a new awesome theme?</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="footer"><a href="#">See All Messages</a></li>
+                            </ul>
+                        </li>
+                        -->
+
+                        <!-- Tasks -->
+                        <li class="dropdown tasks-menu">
+
+                            {% if state == 'activated' %}
+                            <a href=" {{ url_for('deactivateProject') }} " class="alert-danger">
+                                <i class="fa fa-tasks"></i>
+                                <span class="">  Deactivate</span>
+                            </a>
+                            {% elif state == 'deactivated' %}
+                            <a href=" {{ url_for('activateProject') }} " class="alert-success">
+                                <i class="fa fa-tasks"></i>
+                                <span class="">  Activate</span>
+                            </a>
+                            {% endif %}
+
+                        </li>
+
+                        <!-- User Account -->
+                        <li class="dropdown user user-menu">
+
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-user"></i>
+                                <span>{{ admin.name }} <i class="caret"></i></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
+                                <li class="dropdown-header text-center">Account</li>
+
+
+                                        <li class="divider"></li>
+
+                                        <li>
+                                            <a href="{{ url_for('logout') }}"><i class="fa fa-ban fa-fw pull-right"></i> Logout</a>
+                                        </li>
+                            </ul>
+
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        
+        <!-- sidebar -->
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            <!-- Left side column. contains the logo and sidebar -->
+            <aside class="left-side sidebar-offcanvas">
+                <!-- sidebar-->
+                <section class="sidebar">
+                    <!-- Sidebar user panel -->
+                    <div class="user-panel">
+                        
+                        <div class="pull-left info">
+                            <p>Hello, {{ admin.name }}</p>
+
+                            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                        </div>
+                    </div>
+                    <!-- search form -->
+                    <form action="#" method="get" class="sidebar-form">
+                        <div class="input-group">
+                            <input type="text" name="q" class="form-control" placeholder="Search..."/>
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                    </form>
+                    <!-- /.search form -->
+                    <!-- sidebar menu: : style can be found in sidebar.less -->
+                    <ul class="sidebar-menu">
+                        <!-- <li class="active"> -->
+                        <li>
+                            <a href="{{ url_for('dashboard') }}">
+                                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('project') }}">
+                                <i class="fa fa-gavel"></i> <span>Project</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ url_for('statistics') }}">
+                                <i class="fa fa-globe"></i> <span>Statistics</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ url_for('users') }}">
+                                <i class="fa fa-glass"></i> <span>Users</span>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <div class="footer-main">
+                        Copyright © VCAD, 2016
+                    </div>
+
+                </section>
+                <!-- /.sidebar -->
+            </aside>
+
+
+
+            <!-- right side -->
+            <aside class="right-side">
+
+                <!-- Main content -->
+                <section class="content">
+
+                    <div class="row" style="margin-bottom:5px;">
+
+                        <div class="col-md-3">
+                            <div class="sm-st clearfix">
+                                <span class="sm-st-icon st-red"><i class="fa fa-check-square-o"></i></span>
+                                <div class="sm-st-info">
+                                    <span>{{ projects }}</span>
+                                    Projects
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="sm-st clearfix">
+                                <span class="sm-st-icon st-violet"><i class="fa fa-bars"></i></span>
+                                <div class="sm-st-info">
+                                    <span>{{ files }}</span>
+                                    Total Fragments
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="sm-st clearfix">
+                                <span class="sm-st-icon st-blue"><i class="fa fa-file-code-o"></i></span>
+                                <div class="sm-st-info">
+                                    <span>{{ jobs }}</span>
+                                    Total Jobs
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="sm-st clearfix">
+                                <span class="sm-st-icon st-green"><i class="fa fa-users"></i></span>
+                                <div class="sm-st-info">
+                                    <span>{{ users }}</span>
+                                    Users
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        {% block content %}{% endblock %}
+                    </div>    
+
+                </section>
+            </aside>
+
+
+        
+        </div><!-- ./wrapper -->
+
+
+    <script src={{ url_for('static', filename='js/jquery.min.js') }}></script>
+    <script src={{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}></script>
+    <script src={{ url_for('static', filename='js/d3/d3.min.js') }}></script>
+    <script src={{ url_for('static', filename='js/d3/d3.tip.js') }}></script>
+    <script src={{ url_for('static', filename='js/d3/metricsgraphics.min.js') }}></script>
+    <script src={{ url_for('static', filename='js/vcad/app.js') }}></script>
+    <script src={{ url_for('static', filename='js/vcad/visualization.js') }}></script>
+  </body>
+</html>
